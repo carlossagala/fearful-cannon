@@ -50,6 +50,7 @@ namespace MyApp
                 .AddJsonFile("/secrets/appsettings.secrets.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
             
+            Configuration = builder.Build();
             
             var message = $"Host: {Environment.MachineName}\n" +
                     $"EnvironmentName: {env.EnvironmentName}\n" +
