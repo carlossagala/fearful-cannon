@@ -33,6 +33,8 @@ namespace MyApp
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
+        
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -40,7 +42,21 @@ namespace MyApp
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("secrets/appsettings.secrets.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+            
+            
+            var message = $"Host: {Environment.MachineName}\n" +
+                    $"EnvironmentName: {env.EnvironmentName}\n" +
+                    $"Secret value: {Configuration["Database:ConnectionString"]}";
+            
+            Console.WriteLine(message);
+            
             app.UseHealthChecks("/health");
 
             // Optionally, initialize Db with data here
