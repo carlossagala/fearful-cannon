@@ -17,7 +17,10 @@ namespace MyApp.Controllers
         [HttpGet]
         public ActionResult<Greeting> Get([FromQuery] string name = "World")
         {
-            return new Greeting { Content = $"Hello, {name}!" };
+                  var message = $"Host: {Environment.MachineName}\n" +
+                    $"EnvironmentName: {env.EnvironmentName}\n" +
+                    $"Secret value: {Configuration["Database:ConnectionString"]}";
+            return new Greeting { Content = $"Hello, {message}!" };
         }
     }
 }
